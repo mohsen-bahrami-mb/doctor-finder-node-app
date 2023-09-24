@@ -1,0 +1,118 @@
+<!--
+<% data = include("../components/parseData") %>
+<% success = include("../components/parseSuccess") %>
+<% message = include("../components/parseMessage") %>
+<% err = include("../components/parseErr") %>
+<% msg = include("../components/parseMsg") %>
+-->
+<!-- <pre><%#= data %></pre> -->
+<!-- <pre><%#= data.registry %></pre> -->
+<!-- <pre><%#= data.user %></pre> -->
+<!-- <pre><%#= err %></pre> -->
+<!-- <pre><%#= msg %></pre> -->
+<!-- <pre><%#= success %></pre> -->
+<!-- <pre><%#= message %></pre> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- styles - start -->
+    <link href="/bootstrap@5.3.0/bootstrap.min.css" rel="stylesheet">
+    <!-- styles - end -->
+    <title>All Users</title>
+</head>
+
+<body class="container-md">
+    <header class="bg-secondary text-white p-2">
+        <h1>All Users</h1>
+        <span>success: <%= success %></span>
+        <span> | </span>
+        <span>message: <%= message %></span>
+        <%- include("../components/msg&err") %>
+    </header>
+    <%- include("../components/ownerTopNav") %>
+        <!-- search filter - start -->
+        <div class="my-2">
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse-search-query" aria-expanded="false" aria-controls="collapse-search-query">
+                search query
+            </button>
+        </div>
+        <div class="collapse" id="collapse-search-query">
+            <form class="d-flex flex-wrap flex-sm-nowrap my-2 bg-warning-subtle" role="search">
+                <input class="form-control m-1" type="search" placeholder="Template Name" id="search-template-name"
+                    aria-label="Search">
+                <input class="form-control m-1" type="number" placeholder="Skip" id="search-skip" aria-label="Search">
+                <input class="form-control m-1" type="number" placeholder="Limit" id="search-limit" aria-label="Search">
+                <select class="form-select m-1" aria-label="Default select example" id="search-sort">
+                    <option value="" selected>not sort</option>
+                    <option value="f_a">first name a-z</option>
+                    <option value="f_z">first name z-a</option>
+                    <option value="l_a">last name a-z</option>
+                    <option value="l_z">last name z-a</option>
+                </select>
+                <button class="btn btn-outline-success m-1" type="button" id="search">Search</button>
+            </form>
+        </div>
+        <!-- search filter - end -->
+        <!-- users list - start -->
+        <div class="overflow-x-auto">
+            <table class="table table-striped table-dark table-hover">
+                <thead class="sticky-top table-light">
+                    <tr>
+                        <th class="text-danger" scope="col">#</th>
+                        <th class="text-danger" scope="col">first name</th>
+                        <th class="text-danger" scope="col">last name</th>
+                        <th class="text-danger" scope="col">phone</th>
+                        <th class="text-danger" scope="col">email</th>
+                        <th class="text-danger" scope="col">active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <% if(data.user) {data.user.map((u,i)=>{ %> -->
+                    <tr>
+                        <th scope="row">
+                            <%= i+1 %>
+                        </th>
+                        <td>
+                            <a class="link-light text-decoration-none d-block w-100"
+                                href="/dashboard/owner/user/<%= u.username %>">
+                                <%= u.first_name %>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="link-light text-decoration-none d-block w-100"
+                                href="/dashboard/owner/user/<%= u.username %>">
+                                <%= u.last_name %>
+                            </a>
+                        </td>
+                        <td>
+                            <%= u.phone %>
+                        </td>
+                        <td>
+                            <%= u.email %>
+                        </td>
+                        <td>
+                            <%= u.deactive===false ? "OK" : "deactive" %>
+                        </td>
+                    </tr>
+                    <!-- <% })} %> -->
+                </tbody>
+            </table>
+        </div>
+        <!-- users list - end -->
+        <!-- <% if(!data.user){ %> -->
+        <h4 class="text-center">not found a user!</h4>
+        <!-- <% } %> -->
+        <!-- scripts- start -->
+        <script src="/bootstrap@5.3.0/bootstrap.bundle.min.js"></script>
+        <script src="/script.js"></script>
+        <!-- scripts- end -->
+
+</body>
+
+</html>

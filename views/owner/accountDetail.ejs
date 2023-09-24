@@ -1,0 +1,65 @@
+<!--
+<% data = include("../components/parseData") %>
+<% success = include("../components/parseSuccess") %>
+<% message = include("../components/parseMessage") %>
+<% err = include("../components/parseErr") %>
+<% msg = include("../components/parseMsg") %>
+-->
+<!-- <pre><%#= data %></pre> -->
+<!-- <pre><%#= data.user %></pre> -->
+<!-- <pre><%#= data.previous_field %></pre> -->
+<!-- <pre><%#= err %></pre> -->
+<!-- <pre><%#= msg %></pre> -->
+<!-- <pre><%#= success %></pre> -->
+<!-- <pre><%#= message %></pre> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- styles - start -->
+    <link href="/bootstrap@5.3.0/bootstrap.min.css" rel="stylesheet">
+    <!-- styles - end -->
+    <title>Owner Account Detail</title>
+</head>
+
+<body class="container-md">
+    <header class="bg-secondary text-white p-2">
+        <h1>Owner Account Detail</h1>
+        <span>success: <%= success %></span>
+        <span> | </span>
+        <span>message: <%= message %></span>
+        <%- include("../components/msg&err") %>
+    </header>
+    <%- include("../components/ownerTopNav") %>
+        <form action="/dashboard/owner/account?method=put" method="POST" enctype="application/x-www-form-urlencoded"
+            class="form-control my-2">
+            <input type="text" name="first_name" placeholder="first_name" value="<%= data.user.first_name %>"
+                class="form-control my-2">
+            <input type="text" name="last_name" placeholder="last_name" value="<%= data.user.last_name %>"
+                class="form-control my-2">
+            <input type="text" name="phone" placeholder="phone" value="<%= data.user.phone %>"
+                class="form-control my-2">
+            <input type="text" name="email" placeholder="email" value="<%= data.user.email %>"
+                class="form-control my-2">
+            <input type="password" name="password" placeholder="password" value="" class="form-control my-2">
+            <input type="password" name="new_password" placeholder="new_password" value="" class="form-control my-2">
+            <input type="password" name="new_password_repeat" placeholder="new_password_repeat" value=""
+                class="form-control my-2">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-12">
+                    <input type="submit" value="update account detail" class="btn btn-primary form-control my-2">
+                </div>
+            </div>
+        </form>
+        <!-- scripts- start -->
+        <script src="/bootstrap@5.3.0/bootstrap.bundle.min.js"></script>
+        <script src="/script.js"></script>
+        <!-- scripts- end -->
+
+</body>
+
+</html>

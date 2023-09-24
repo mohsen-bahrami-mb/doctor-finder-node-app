@@ -12,7 +12,8 @@ export default new (class extends Controller {
         response({
             res, success: false, sCode: 404, message: "not found page!",
             data: { not_found_address: req.originalUrl },
-            req, type: "render", view: "errors/notFound"
+            req,
+            // type: "redirect-nodb", view: "/notFound"
         });
     }
 

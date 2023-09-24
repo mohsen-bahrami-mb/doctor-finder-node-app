@@ -10,7 +10,7 @@ export default new (class extends Controller {
     async redirectToHome(req: Express.Request, res: Express.Response): Promise<void> {
         return response({
             res, success: true, sCode: 301, message: "redirect to / path", data: {},
-            req, type: "redirect", view: "/"
+            req, type: "redirect-nodb", view: "/"
         });
     }
     // get / (home)

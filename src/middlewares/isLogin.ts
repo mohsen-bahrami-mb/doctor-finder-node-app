@@ -1,6 +1,6 @@
 // import modules
 // import controllers
-import { response } from "../controllers/controller";
+import { response } from "../controllers";
 // import models
 // import types
 import Express from "express";

@@ -33,7 +33,7 @@ export default (function () {
             ),
             transports: [
                 new transports.File({ filename: 'logfile.log', handleExceptions: true, handleRejections: true }),
-                // new winston.transports.Console({ handleExceptions: true, handleRejections: true })
+                new winston.transports.Console({ handleExceptions: true, handleRejections: true })
             ]
         });
     }

@@ -1,7 +1,7 @@
 // import modules
-import Controller from "../../controllers/controller";
+import Controller from "../../controllers";
 // import middleware modules
-import { response } from "../../controllers/controller";
+import { response } from "../../controllers";
 // import modules types
 import Express from "express";
 

@@ -1,7 +1,7 @@
 // import modules
 import { logger } from "../logger";
 // import middlewares
-import { response } from "../../controllers/controller";
+import { response } from "../../controllers";
 // import modules types
 import Express from "express";
 import requestIp from "request-ip"

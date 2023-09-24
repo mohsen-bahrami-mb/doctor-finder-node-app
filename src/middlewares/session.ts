@@ -1,7 +1,7 @@
 // import modules
 import { publicRoute } from "../startup/checkRoute";
 // import controllers
-import { checkJwt, createSession, updateSession } from "../controllers/controller";
+import { checkJwt, createSession, updateSession } from "../controllers";
 // import types
 import Express from "express";
 

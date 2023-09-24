@@ -2,7 +2,7 @@
 import debug from "debug";
 import router from "../routes";
 // import controllers
-import { createRoute } from "../controllers/controller";
+import { createRoute } from "../controllers";
 
 const mainDebug = debug("app:main");
 
@@ -23,7 +23,6 @@ export default async function checkMainRoute(route: string[], is_protect_user: b
     const checkMainRoute = await Promise.all(uniqueIndex.map(async (r) => {
         // const content = r === "/" ? "" : "{}";
         const content = "{}";
-        console.log(uniqueIndex)
         return await createRoute(r, "main", content, is_protect_user);
     }));
     const failedRoute = checkMainRoute.filter(r => r.route === undefined);

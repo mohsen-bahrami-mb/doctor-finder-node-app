@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 // import models
 import Session from "../models/session";
-import { response } from "./controller";
+import { response } from ".";
 // import types
 import Express from "express";
 

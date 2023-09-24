@@ -4,7 +4,7 @@ import { FMDB } from "../../controllers/file";
 import Controller, {
     getOneRoute, response, updateOtherAccount, updateSelfAccount,
     updateRoute, renameOne, readDir, createDir, deleteOne, copyOne
-} from "../../controllers/controller";
+} from "../../controllers";
 // import middleware
 // import models
 import File from "../../models/file";

@@ -2,7 +2,7 @@
 import fs from "fs";
 import bcrypt from "bcrypt";
 // import controllers
-import { createUsername, logout, response } from "./controller";
+import { createUsername, logout, response } from ".";
 // import models
 import User, { userVerifyEnum, userRoleEnum } from "../models/user";
 // import middleware

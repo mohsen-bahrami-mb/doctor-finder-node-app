@@ -1,6 +1,6 @@
 // import modules
 import { logger } from "../startup/logger";
-import { response } from "../controllers/controller";
+import { response } from "../controllers";
 // import module types
 import Express from "express";
 import multer from "multer";

@@ -1,5 +1,5 @@
 // import controllers
-import { getOneRoute, response } from "../../controllers/controller";
+import { getOneRoute, response } from "../../controllers";
 // import models
 import User from "../../models/user";
 // import module types

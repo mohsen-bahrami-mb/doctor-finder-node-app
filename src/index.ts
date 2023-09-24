@@ -13,7 +13,7 @@ import db from "./startup/db";
 import checkMainRoute, { mainRoute, mainRouteProtect, createAppRoutes } from "./startup/checkRoute";
 import router from "./routes";
 // import controller
-import acceptFMDB from "./controllers/file";
+// import acceptFMDB from "./controllers/file";
 
 // start app with these funcrion modules
 const mainDebug = debug("app:main");
@@ -21,7 +21,7 @@ const app = express();
 appConfig(app);
 db();
 // accept file manager database
-acceptFMDB();
+// acceptFMDB();
 
 checkMainRoute(mainRoute, false);
 checkMainRoute(mainRouteProtect, true);

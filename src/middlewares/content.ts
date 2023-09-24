@@ -3,7 +3,7 @@ import Express from "express";
 // import models
 import Session from "../models/session";
 // import controllers
-import { createSession, updateSession } from "../controllers/controller";
+import { createSession, updateSession } from "../controllers";
 
 /**
  * pass `content` module as middleware before all routes. this module create:

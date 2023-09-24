@@ -1,5 +1,5 @@
 // import controller
-import { checkValidateErr } from "../../controllers/controller";
+import { checkValidateErr } from "../../controllers";
 // import modules
 // import types
 import Express from "express";

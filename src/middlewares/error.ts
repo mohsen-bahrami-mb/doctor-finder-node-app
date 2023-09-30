@@ -10,7 +10,8 @@ export default function errorApp(err: any, req: Express.Request, res: Express.Re
     if (err instanceof multer.MulterError) return response({
         res, sCode: 400, success: false, message: "transfer file error",
         data: { err: [process.env.NODE_ENV === "development" ? err.stack : err.message] },
-        req, type: "redirect", view: req.originalUrl
+        req,
+        // type: "redirect", view: req.originalUrl
     });
     // log error in server app and send appropreate response
     logger.error({
@@ -20,6 +21,7 @@ export default function errorApp(err: any, req: Express.Request, res: Express.Re
     return response({
         res, sCode: 500, success: false, message: "server error: something failed",
         data: { err: [process.env.NODE_ENV === "development" ? err.stack : err.message] },
-        req, type: "render", view: "errors/serverError"
+        req,
+        // type: "render", view: "errors/serverError"
     });
 }

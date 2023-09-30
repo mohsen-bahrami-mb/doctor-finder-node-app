@@ -2,7 +2,7 @@
 import autoBind from "auto-bind";
 // import controllers
 import response from "./response";
-import checkValidateErr from "./validator";
+import checkValidateErr, { ValidateErr } from "./validator";
 import { createUsername } from "./createUniqueName";
 import devicesLimit from "./devicesLimit";
 import checkJwt from "./checkJwt";
@@ -16,7 +16,7 @@ import { deleteProfilePhoto, renameOne, readDir, createDir, deleteOne, copyOne }
 
 // export other modules
 export {
-    response, checkValidateErr, createUsername, createSession, updateSession, logout, updateSelfAccount, updateOtherAccount,
+    response, checkValidateErr, ValidateErr, createUsername, createSession, updateSession, logout, updateSelfAccount, updateOtherAccount,
     devicesLimit, checkJwt, createRoute, updateRoute, getManyRoute, getOneRoute, deleteOneRoute, deleteProfilePhoto,
     renameOne, readDir, createDir, deleteOne, copyOne
 };

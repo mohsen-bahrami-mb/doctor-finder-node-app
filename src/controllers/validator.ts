@@ -11,7 +11,24 @@ export default function checkValidateErr(
 ): void {
     if (err.length) return response({
         res, success: false, sCode: 400, message: "validation error", data: { err },
-        req, type: "redirect", view: (redirect ?? req.originalUrl)
+        req,
+        // type: "redirect", view: (redirect ?? req.originalUrl)
     });
     next();
+}
+
+
+export class ValidateErr {
+    public err: string[] = [];
+
+    async checkValid(condition: () => boolean, msgErr: string) {
+        new Promise((resolve, reject) => {
+            if (condition()) resolve(true);
+            else reject(msgErr);
+        }).catch((v) => { this.err.push(v) });
+    }
+
+    checkValidSync(condition: () => boolean, msgErr: string) {
+        if (!condition()) this.err.push(msgErr);
+    }
 }

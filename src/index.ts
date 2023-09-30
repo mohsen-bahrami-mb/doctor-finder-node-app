@@ -27,7 +27,7 @@ checkMainRoute(mainRoute, false);
 checkMainRoute(mainRouteProtect, true);
 
 // routes director
-app.use("/", router);
+app.use(router);
 createAppRoutes();
 
 const port = process.env.PORT || 5000;

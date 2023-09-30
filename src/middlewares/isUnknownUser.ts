@@ -12,7 +12,8 @@ export default async function (
     if (req.session.is_login) return response({
         res, success: false, sCode: 409, message: "logged in user",
         data: { err: ["شما هم اکنون در پنل کاربری خود هستید!", "نیازی به ثبت نام یا ورود مجدد نیست!"] },
-        req, type: "redirect", view: "/dashboard"
+        req,
+        // type: "redirect-nodb", view: "/user/dashboard"
     });
     next();
 }

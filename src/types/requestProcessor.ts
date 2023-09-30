@@ -23,11 +23,12 @@ export type User = {
     password?: string;
     phone?: string;
     email?: string;
-    role?: string;
+    role?: string[];
     verify?: string[];
     profile_photo?: string;
     birth_date?: Date;
     country?: string;
+    city?: string;
     description?: string;
 }
 

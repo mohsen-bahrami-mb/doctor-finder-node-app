@@ -12,7 +12,8 @@ export default async function (
     if (!req.session.is_login) return response({
         res, success: false, sCode: 401, message: "access denaid",
         data: { err: ["نیاز است که در سایت لاگین کنید"] },
-        req, type: "redirect", view: "/auth/login"
+        req, 
+        // type: "redirect-nodb", view: "/auth/login"
     });
     next();
 }

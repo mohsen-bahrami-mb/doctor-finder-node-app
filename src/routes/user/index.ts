@@ -8,9 +8,8 @@ import validator from "./validator";
 
 const router = express.Router();
 
-router.get("/profile",
-    controller.getProfile
-);
+router.get("/profile", controller.getProfile);
+router.get("/made-to-doctor-role", controller.madeToDcotorRole);
 
 export default router;
 

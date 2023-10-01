@@ -21,6 +21,7 @@ router.use(session)
 // call routers
 router.use("/", homeRouter);
 router.use("/auth", isUnknownUser, authRouter);
+router.use("/user", isLogin, userRouter);
 // router.use("/any", anyRouter);
 
 router.use("/*", notFoundRouter);

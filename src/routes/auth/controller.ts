@@ -1,7 +1,7 @@
 // import modules
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Controller, { createUsername } from "../../controllers";
+import Controller, { createUsername, updateSession } from "../../controllers";
 // import middleware modules
 import { response } from "../../controllers";
 // import modules types
@@ -9,6 +9,7 @@ import Express from "express";
 import { User as UserType } from "../../types/requestProcessor";
 // import models types
 import User from "../../models/user";
+import Session from "../../models/session";
 
 export default new (class extends Controller {
     // make all route logic as middleware function
@@ -25,14 +26,12 @@ export default new (class extends Controller {
         const username = await createUsername(<string>first_name, <string>last_name);
         const newUser = new User({ username, first_name, last_name, password, phone });
         await newUser.save();
-        const user_token = jwt.sign({
-            id: newUser.id,
-            first_name: newUser.first_name,
-            last_name: newUser.last_name,
-            phone: newUser.phone,
-            email: newUser?.email
-        }, <string>process.env.JWT_SECRET_KEY);
-        response({ res, success: true, sCode: 200, message: "user successfully registred", data: { user_token } });
+        req.user.id = newUser.id;
+        req.session.issue = "register";
+        req.session.is_login = true;
+        updateSession(req, res, req.session, false);
+        const user_token = jwt.sign({ session_id: req.session.id }, <string>process.env.JWT_SESSION_KEY);
+        response({ res, success: true, sCode: 200, message: "user successfully registred", data: { "x-auth-token": user_token } });
     }
 
     async login(req: Express.Request, res: Express.Response): Promise<void> {
@@ -46,14 +45,13 @@ export default new (class extends Controller {
         if (!validPassword) return response({
             res, success: false, sCode: 400, message: "username or password is wrong!", data: { user: null }, req
         });
-        const user_token = jwt.sign({
-            id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            phone: user.phone,
-            email: user?.email
-        }, <string>process.env.JWT_SECRET_KEY);
-        response({ res, success: true, sCode: 200, message: "user successfully loged in", data: { user_token } });
+        const session = await Session.findById(req.session.id);
+        req.user.id = user.id;
+        req.session.issue = "login";
+        req.session.is_login = true;
+        updateSession(req, res, session, false);
+        const user_token = jwt.sign({ session_id: req.session.id }, <string>process.env.JWT_SESSION_KEY);
+        response({ res, success: true, sCode: 200, message: "user successfully loged in", data: { "x-auth-token": user_token } });
     }
 
 })();

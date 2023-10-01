@@ -9,8 +9,8 @@ export default async function (
     req: Express.Request, res: Express.Response, next: Express.NextFunction
 ): Promise<void> {
     // check is login user
-    if (!req.session.is_login) return response({
-        res, success: false, sCode: 401, message: "access denaid",
+    if (!req?.session?.is_login) return response({
+        res, success: false, sCode: 401, message: "access denaid!",
         data: { err: ["نیاز است که در سایت لاگین کنید"] },
         req, 
         // type: "redirect-nodb", view: "/auth/login"

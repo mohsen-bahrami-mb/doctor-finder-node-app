@@ -32,6 +32,7 @@ export async function createSession(
     });
     await newSession.save();
     // set session in req
+    const token = jwt.sign({ session_id: newSession.id }, <string>process.env.JWT_SESSION_KEY);
     req.session = {
         issue: req.session.issue ?? "visit",
         is_login: req.session.is_login,
@@ -40,11 +41,11 @@ export async function createSession(
         device: newSession.device,
         ip: newSession.ip,
         user_id: newSession.user_id,
+        token,
         content: JSON.parse(newSession.content)
     }
     // update cookie from jwt
     if (!setCookie) return;
-    const token = jwt.sign({ session_id: newSession.id }, <string>process.env.JWT_SESSION_KEY);
     res.cookie("x-auth-token", token, { maxAge: expireTime });
 }
 
@@ -67,9 +68,9 @@ export async function updateSession(
         req.session.is_login = false;
         req.session.issue = "logout";
         session.is_login = false;
-        session.issue.push("loguot");
+        session.issue.push("logout");
         await session.save();
-        res.cookie("x-auth-token", "", { maxAge: Date.now() })
+        setCookie && res.cookie("x-auth-token", "", { maxAge: Date.now() })
         return;
     }
     // set session in db
@@ -80,6 +81,7 @@ export async function updateSession(
     session.is_login = req.session.is_login ?? session.is_login;
     session.device = req.headers["user-agent"] ?? "unknown";
     session.ip = req.clientIp ?? "unknown";
+    session.token = req.headers["x-auth-token"];
     // (add "{}" insted of `session.content` , becouse has error when repeat reload fastly)
     session.content = session_content && session_content?.length ? session_content : "{}";
     await session.save();

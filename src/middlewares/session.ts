@@ -19,19 +19,24 @@ export default async function session(
     // if (isPublicRoute) return next();
 
     // check token and session
-    const token = await req.cookies["x-auth-token"];
+    // const token = await req.cookies["x-auth-token"];
+    const token = req.headers["x-auth-token"] as string;
     if (token) {
-        const { session, clearCookie } = await checkJwt(token);
-        if (clearCookie) res.cookie("x-auth-token", "", { maxAge: Date.now() });
+        const { session } = await checkJwt(token);
+        // const { session, clearCookie } = await checkJwt(token);
+        // if (clearCookie) res.cookie("x-auth-token", "", { maxAge: Date.now() });
         if (session) {
-            await updateSession(req, res, session, true);
+            // await updateSession(req, res, session, true);
+            await updateSession(req, res, session, false);
             next();
         } else {
-            await createSession(req, res, true);
+            // await createSession(req, res, true);
+            await createSession(req, res, false);
             next();
         }
     } else {
-        await createSession(req, res, true);
+        // await createSession(req, res, true);
+        await createSession(req, res, false);
         next();
     }
 }

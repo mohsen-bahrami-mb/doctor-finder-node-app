@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import timeStamp from "mongoose-timestamp";
 
 // define enums
-export const sessionIssueEnum: string[] | [] = ["register", "login", "loguot", "visit", "set-content", "get-content"];
+export const sessionIssueEnum: string[] | [] = ["register", "login", "logout", "visit", "set-content", "get-content"];
 
 const sessionSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

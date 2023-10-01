@@ -3,6 +3,7 @@ import express from "express";
 // import routes
 import homeRouter from "./home";
 import authRouter from "./auth";
+import userRouter from "./user";
 import notFoundRouter from "./notFound";
 // import anyRouter from "./any";
 // import middleware
@@ -16,7 +17,7 @@ import { accessRoute } from "../middlewares/routeControl";
 
 const router = express.Router();
 // add session to all routes
-// router.use(session)
+router.use(session)
 // call routers
 router.use("/", homeRouter);
 router.use("/auth", isUnknownUser, authRouter);

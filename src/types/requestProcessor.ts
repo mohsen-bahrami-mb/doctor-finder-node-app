@@ -41,7 +41,8 @@ export type Session = {
     is_login?: boolean;
     device?: string;
     ip?: string;
-    content?: { [key: string]: any }
+    content?: { [key: string]: any };
+    token?: string;
 }
 
 //  for req.sContent

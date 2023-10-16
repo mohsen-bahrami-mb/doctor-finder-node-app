@@ -19,9 +19,9 @@ const router = express.Router();
 // add session to all routes
 router.use(session)
 // call routers
-router.use("/", homeRouter);
-router.use("/auth", isUnknownUser, authRouter);
-router.use("/user", isLogin, userRouter);
+router.use("/api/", homeRouter);
+router.use("/api/auth", isUnknownUser, authRouter);
+router.use("/api/user", isLogin, userRouter);
 // router.use("/any", anyRouter);
 
 router.use("/*", notFoundRouter);

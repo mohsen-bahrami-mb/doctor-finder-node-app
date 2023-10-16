@@ -4,7 +4,7 @@ import timeStamp from "mongoose-timestamp";
 
 // define enums
 export const userVerifyEnum: string[] = ["phone", "email", "national_code"];
-export const userRoleEnum: string[] = ["owner", "admin", "user", "doctor"];
+export const userRoleEnum: string[] = ["owner", "admin", "user", "doctor", "clinick"];
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true, lowercase: true, trim: true, index: true },
@@ -21,8 +21,12 @@ const userSchema = new mongoose.Schema({
         set: (p: string): string => p.replace(/\\/g, "/").replace(/(^public)(\/.*)/g, "$2")
     },
     birth_date: Date,
-    country: String,
-    city: String,
+    location: {
+        country: { type: String, trim: true },
+        city: { type: String, trim: true },
+        address: { type: String, trim: true },
+        map: { type: String, trim: true }
+    },
     description: String
 });
 // added crerate & update time in document

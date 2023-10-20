@@ -8,7 +8,7 @@ export const doctorVerifyEnum: string[] = ["medical_serial"];
 const doctorSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
     medical_serial: String,
-    category: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+    category: { type: [mongoose.Schema.Types.ObjectId], ref: "Category" },
     verify: { type: [String], enum: doctorVerifyEnum },
     description: {
         biography: String,

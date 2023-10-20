@@ -9,6 +9,7 @@ const clinickSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
     name: { type: String, trim: true },
     phone: { type: String, trim: true },
+    category: { type: [mongoose.Schema.Types.ObjectId], ref: "Category" },
     location: {
         country: { type: String, trim: true },
         city: { type: String, trim: true },

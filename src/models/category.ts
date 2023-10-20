@@ -6,7 +6,7 @@ import timeStamp from "mongoose-timestamp";
 // export const Enum: string[] = [];
 
 const categorySchema = new mongoose.Schema({
-    name: { type: String, trim: true, required: true },
+    name: { type: String, trim: true, required: true, index: true },
     doctors: { type: [mongoose.Schema.Types.ObjectId], ref: "Doctor", index: true },
     clinicks: { type: [mongoose.Schema.Types.ObjectId], ref: "Clinick", index: true },
 });

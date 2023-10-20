@@ -2,6 +2,7 @@
 import Controller from "../../controllers";
 // import middleware modules
 import { response } from "../../controllers";
+import Mongoose from "mongoose";
 // import modules types
 import Express from "express";
 // import models types
@@ -74,6 +75,44 @@ export default new (class extends Controller {
             req, res, success: true, sCode: 200,
             message: "successfully added category for this user",
             data: { categoryName: req.body.categoryName }
+        });
+    }
+
+    async deleteCategory(req: Express.Request, res: Express.Response): Promise<void> {
+        const item = req.params.item;
+        const doctor = await Doctor.findOne({ user_id: req.user.id });
+
+        if (!doctor) return response({
+            req, res, success: false, sCode: 403, message: "this user is has no category!"
+        });
+
+        const category = await Category.findOne({ name: item });
+        if (!category) return response({
+            req, res, success: false, sCode: 404,
+            message: "has no category with this name!", data: { notFound: item }
+        });
+
+        const clinick = await Clinick.findOne({ user_id: req.user.id });
+
+        const newCatDoctors = category.doctors.filter((id) => id != doctor.id);
+        const newCatClinicks = category.clinicks.filter((id) => id != clinick?.id);
+
+        const newDoctorCategory = doctor.category.filter((id) => id != category.id);
+        const newClinickCategory = clinick?.category.filter((id) => id != category.id);
+
+        category.doctors = newCatDoctors;
+        category.clinicks = newCatClinicks;
+
+        doctor.category = newDoctorCategory;
+        if (clinick) clinick.category = newClinickCategory as Mongoose.Types.ObjectId[];
+
+        await category.save();
+        await doctor.save();
+        await clinick?.save();
+
+        response({
+            req, res, success: true, sCode: 200,
+            message: "category deleted for this user, successfully", data: { deletedCategory: item }
         });
     }
 

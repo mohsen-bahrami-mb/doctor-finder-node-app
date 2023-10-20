@@ -15,6 +15,9 @@ router.get("/profile", controller.getProfile);
 router.get("/madeToDoctorRole", controller.madeToDoctorRole);
 router.get("/madeToClinickRole", controller.madeToClinickRole);
 
+router.post("/addCategory", controller.addCategory);
+router.delete("/deleteCategory/:item", controller.deleteCategory);
+
 router.use("/doctor", doctorRouter);
 router.use("/clincik", clinickRouter);
 

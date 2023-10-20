@@ -1,3 +1,6 @@
+// import routes
+import doctorRouter from "./doctor";
+import clinickRouter from "./clinick";
 // import modules
 import express from "express";
 import controller from "./controller";
@@ -9,7 +12,11 @@ import validator from "./validator";
 const router = express.Router();
 
 router.get("/profile", controller.getProfile);
-router.get("/made-to-doctor-role", controller.madeToDcotorRole);
+router.get("/madeToDoctorRole", controller.madeToDoctorRole);
+router.get("/madeToClinickRole", controller.madeToClinickRole);
+
+router.use("/doctor", doctorRouter);
+router.use("/clincik", clinickRouter);
 
 export default router;
 

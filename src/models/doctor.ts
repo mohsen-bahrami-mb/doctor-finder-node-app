@@ -6,7 +6,7 @@ import timeStamp from "mongoose-timestamp";
 export const doctorVerifyEnum: string[] = ["medical_serial"];
 
 const doctorSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true, required: true },
     medical_serial: String,
     category: { type: [mongoose.Schema.Types.ObjectId], ref: "Category" },
     verify: { type: [String], enum: doctorVerifyEnum },

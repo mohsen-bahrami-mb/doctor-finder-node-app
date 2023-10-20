@@ -8,6 +8,7 @@ import Express from "express";
 import User from "../../models/user";
 import Doctor from "../../models/doctor";
 import Clinick from "../../models/clinick";
+import Category from "../../models/category";
 
 export default new (class extends Controller {
     // make all route logic as middleware function
@@ -40,6 +41,40 @@ export default new (class extends Controller {
         });
         clinick = await Clinick.create({ user_id: req.user.id });
         response({ res, success: true, sCode: 200, message: "user successfully registred", data: { clinick } });
+    }
+
+    async addCategory(req: Express.Request, res: Express.Response): Promise<void> {
+        const doctor = await Doctor.findOne({ user_id: req.user.id });
+        if (!doctor) return response({
+            req, res, success: false, sCode: 403, message: "this user cannot add a category!", data: {}
+        });
+
+        const clincik = await Clinick.findOne({ user_id: req.user.id });
+
+        let category = await Category.findOne({ name: req.body.categoryName });
+        if (!category) {
+            category = await new Category({
+                name: req.body.categoryName,
+                doctors: [doctor.id],
+                clinicks: [clincik?.id]
+            });
+        } else {
+            category.doctors.push(doctor.id);
+            category.clinicks.push(clincik?.id);
+        }
+
+        doctor.category.push(category.id);
+        clincik?.category.push(category.id);
+
+        await category.save();
+        await doctor.save();
+        await clincik?.save();
+
+        response({
+            req, res, success: true, sCode: 200,
+            message: "successfully added category for this user",
+            data: { categoryName: req.body.categoryName }
+        });
     }
 
 })();

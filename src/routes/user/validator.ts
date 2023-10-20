@@ -7,13 +7,13 @@ import Express from "express";
 export default class {
     // make all route validator
 
-    static async anyValidator(req: Express.Request, res: Express.Response, next: Express.NextFunction): Promise<void> {
+    static async addCategory(req: Express.Request, res: Express.Response, next: Express.NextFunction): Promise<void> {
         let validate = new ValidateErr();
         let err = validate.err;
-        let { first_name, last_name, password, phone } = req.body;
+        let { categoryName } = req.body;
         (async () => {
-            validate.checkValidSync(() => true, "");
+            validate.checkValidSync(() => typeof categoryName === "string", "categoryName should be an string!");
         })().finally(() => checkValidateErr(req, res, next, err));
-        req.user = { ...req.user, ...{ first_name, last_name, password, phone } };
+        req.user = { ...req.user, ...{ categoryName } };
     }
 };

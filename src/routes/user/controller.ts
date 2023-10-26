@@ -51,18 +51,22 @@ export default new (class extends Controller {
         });
 
         const clincik = await Clinick.findOne({ user_id: req.user.id });
+        const changer = await User.findOne({ user_id: req.user.id, role: { $in: ["owner", "admin"] } });
 
-        let category = await Category.findOne({ name: req.body.categoryName });
-        if (!category) {
+        let category = await Category.findOne({ name: req.body.categoryName }).or([{ id: req.body.id }]);
+        if (!category && !changer) {
+            return response({
+                req, res, success: false, sCode: 403, message: "this user cannot create a category!", data: {}
+            });
+        } else {
             category = await new Category({
                 name: req.body.categoryName,
                 doctors: [doctor.id],
                 clinicks: [clincik?.id]
             });
-        } else {
-            category.doctors.push(doctor.id);
-            category.clinicks.push(clincik?.id);
         }
+        category.doctors.push(doctor.id);
+        category.clinicks.push(clincik?.id);
 
         doctor.category.push(category.id);
         clincik?.category.push(category.id);
@@ -74,7 +78,7 @@ export default new (class extends Controller {
         response({
             req, res, success: true, sCode: 200,
             message: "successfully added category for this user",
-            data: { categoryName: req.body.categoryName }
+            data: { category }
         });
     }
 

@@ -38,7 +38,8 @@ export default new (class extends Controller {
         let doctor = await Doctor.findOne({ user_id: req.user.id }).select({ _id: 0, user_id: 0 });
         if (!doctor) return response({
             res, success: false, sCode: 400,
-            message: "this user is not a doctor! first made it a doctor, then try it again", data: {}
+            message: "this user is not a doctor! first made it a doctor, then try it again",
+            data: { clinick: null }
         });
         clinick = await Clinick.create({ user_id: req.user.id });
         response({ res, success: true, sCode: 200, message: "user successfully registred", data: { clinick } });
@@ -47,7 +48,8 @@ export default new (class extends Controller {
     async addCategory(req: Express.Request, res: Express.Response): Promise<void> {
         const doctor = await Doctor.findOne({ user_id: req.user.id });
         if (!doctor) return response({
-            req, res, success: false, sCode: 403, message: "this user cannot add a category!", data: {}
+            req, res, success: false, sCode: 403,
+            message: "this user cannot add a category!", data: { category: null }
         });
 
         const clincik = await Clinick.findOne({ user_id: req.user.id });
@@ -55,7 +57,8 @@ export default new (class extends Controller {
         let category = await Category.findOne({ name: req.body?.categoryName }).or([{ id: req.body?.categoryId }]);
         if (!category) {
             return response({
-                req, res, success: false, sCode: 404, message: "caannot find this category!", data: {}
+                req, res, success: false, sCode: 404,
+                message: "caannot find this category!", data: { category: null }
             });
         } else {
             category = await new Category({
@@ -86,13 +89,14 @@ export default new (class extends Controller {
         const doctor = await Doctor.findOne({ user_id: req.user.id });
 
         if (!doctor) return response({
-            req, res, success: false, sCode: 403, message: "this user is has no category!"
+            req, res, success: false, sCode: 403,
+            message: "this user is has no category!", data: { deletedCategory: null }
         });
 
         const category = await Category.findOne({ id: itemId });
         if (!category) return response({
             req, res, success: false, sCode: 404,
-            message: "has no category with this name!", data: { notFound: itemId }
+            message: `has no category with this id! - ${itemId}`, data: { deletedCategory: null }
         });
 
         const clinick = await Clinick.findOne({ user_id: req.user.id });

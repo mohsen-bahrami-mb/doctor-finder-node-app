@@ -12,7 +12,7 @@ import * as AppType from "../types/appType";
 */
 export default function response({
     res, success = true, sCode = 200,
-    message, data,
+    message, data = {},
     req, type = "json", view
 }: AppType.AppResponse): void {
     if (type === "json") {

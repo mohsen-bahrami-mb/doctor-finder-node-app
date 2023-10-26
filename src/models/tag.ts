@@ -5,14 +5,14 @@ import timeStamp from "mongoose-timestamp";
 // define enums
 // export const Enum: string[] = [];
 
-const categorySchema = new mongoose.Schema({
+const tagSchema = new mongoose.Schema({
     name: { type: String, trim: true, required: true, index: true },
     doctors: { type: [mongoose.Schema.Types.ObjectId], ref: "Doctor", index: true },
     clinicks: { type: [mongoose.Schema.Types.ObjectId], ref: "Clinick", index: true },
     articles: { type: [mongoose.Schema.Types.ObjectId], ref: "Article" },
 });
 // added crerate & update time in document
-categorySchema.plugin(timeStamp);
+tagSchema.plugin(timeStamp);
 
-const Category = mongoose.model("Category", categorySchema);
-export default Category;
+const Tag = mongoose.model("Tag", tagSchema);
+export default Tag;

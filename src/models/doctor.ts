@@ -9,6 +9,7 @@ const doctorSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true, required: true },
     medical_serial: String,
     category: { type: [mongoose.Schema.Types.ObjectId], ref: "Category" },
+    tag: { type: [mongoose.Schema.Types.ObjectId], ref: "Tag" },
     verify: { type: [String], enum: doctorVerifyEnum },
     description: {
         biography: String,

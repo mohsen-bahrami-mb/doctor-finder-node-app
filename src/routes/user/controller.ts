@@ -51,12 +51,11 @@ export default new (class extends Controller {
         });
 
         const clincik = await Clinick.findOne({ user_id: req.user.id });
-        const changer = await User.findOne({ user_id: req.user.id, role: { $in: ["owner", "admin"] } });
 
         let category = await Category.findOne({ name: req.body?.categoryName }).or([{ id: req.body?.categoryId }]);
-        if (!category && !changer) {
+        if (!category) {
             return response({
-                req, res, success: false, sCode: 403, message: "this user cannot create a category!", data: {}
+                req, res, success: false, sCode: 404, message: "caannot find this category!", data: {}
             });
         } else {
             category = await new Category({
@@ -83,17 +82,17 @@ export default new (class extends Controller {
     }
 
     async deleteCategory(req: Express.Request, res: Express.Response): Promise<void> {
-        const item = req.params.item;
+        const itemId = req.params.id;
         const doctor = await Doctor.findOne({ user_id: req.user.id });
 
         if (!doctor) return response({
             req, res, success: false, sCode: 403, message: "this user is has no category!"
         });
 
-        const category = await Category.findOne({ name: item });
+        const category = await Category.findOne({ id: itemId });
         if (!category) return response({
             req, res, success: false, sCode: 404,
-            message: "has no category with this name!", data: { notFound: item }
+            message: "has no category with this name!", data: { notFound: itemId }
         });
 
         const clinick = await Clinick.findOne({ user_id: req.user.id });
@@ -116,7 +115,12 @@ export default new (class extends Controller {
 
         response({
             req, res, success: true, sCode: 200,
-            message: "category deleted for this user, successfully", data: { deletedCategory: item }
+            message: "category deleted for this user, successfully", data: {
+                deletedCategory: {
+                    id: category.id,
+                    name: category.name,
+                }
+            }
         });
     }
 

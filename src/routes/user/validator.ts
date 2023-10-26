@@ -15,7 +15,9 @@ export default class {
         (async () => {
             if (categoryId)
                 validate.checkValidSync(() => isValidObjectId(categoryId), "wrong categoryId format!");
-            validate.checkValidSync(() => typeof categoryName === "string", "categoryName should be an string!");
+            if (categoryName)
+                validate.checkValidSync(() => typeof categoryName === "string", "categoryName should be an string!");
         })().finally(() => checkValidateErr(req, res, next, err));
     }
+
 };

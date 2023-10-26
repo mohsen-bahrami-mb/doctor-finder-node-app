@@ -16,7 +16,7 @@ router.get("/madeToDoctorRole", controller.madeToDoctorRole);
 router.get("/madeToClinickRole", controller.madeToClinickRole);
 
 router.post("/addCategory", validator.addCategory, controller.addCategory);
-router.delete("/deleteCategory/:item", controller.deleteCategory);
+router.delete("/deleteCategory/:id", controller.deleteCategory);
 
 router.use("/doctor", doctorRouter);
 router.use("/clincik", clinickRouter);

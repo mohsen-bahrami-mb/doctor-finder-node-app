@@ -53,7 +53,7 @@ export default new (class extends Controller {
         const clincik = await Clinick.findOne({ user_id: req.user.id });
         const changer = await User.findOne({ user_id: req.user.id, role: { $in: ["owner", "admin"] } });
 
-        let category = await Category.findOne({ name: req.body.categoryName }).or([{ id: req.body.id }]);
+        let category = await Category.findOne({ name: req.body?.categoryName }).or([{ id: req.body?.categoryId }]);
         if (!category && !changer) {
             return response({
                 req, res, success: false, sCode: 403, message: "this user cannot create a category!", data: {}

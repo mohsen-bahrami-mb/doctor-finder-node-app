@@ -60,12 +60,6 @@ export default new (class extends Controller {
                 req, res, success: false, sCode: 404,
                 message: "caannot find this category!", data: { category: null }
             });
-        } else {
-            category = await new Category({
-                name: req.body.categoryName,
-                doctors: [doctor.id],
-                clinicks: [clincik?.id]
-            });
         }
         category.doctors.push(doctor.id);
         category.clinicks.push(clincik?.id);

@@ -26,7 +26,10 @@ export default new (class extends Controller {
         if (doctor) return response({
             res, success: false, sCode: 409, message: "this user is already doctor!", data: { doctor }
         });
+        const user = await User.findById(req.user.id);
+        (<any>user).role.push("doctor");
         doctor = await Doctor.create({ user_id: req.user.id });
+        await (<any>user).save();
         response({ res, success: true, sCode: 200, message: "user successfully registred", data: { doctor } });
     }
 
@@ -41,7 +44,10 @@ export default new (class extends Controller {
             message: "this user is not a doctor! first made it a doctor, then try it again",
             data: { clinick: null }
         });
+        const user = await User.findById(req.user.id);
+        (<any>user).role.push("clinick");
         clinick = await Clinick.create({ user_id: req.user.id });
+        await (<any>user).save();
         response({ res, success: true, sCode: 200, message: "user successfully registred", data: { clinick } });
     }
 
@@ -62,7 +68,7 @@ export default new (class extends Controller {
             });
         }
         category.doctors.push(doctor.id);
-        category.clinicks.push(clincik?.id);
+        if (clincik) category.clinicks.push(clincik.id);
 
         doctor.category.push(category.id);
         clincik?.category.push(category.id);

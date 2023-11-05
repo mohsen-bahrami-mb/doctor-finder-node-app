@@ -4,6 +4,7 @@ import express from "express";
 import homeRouter from "./home";
 import authRouter from "./auth";
 import userRouter from "./user";
+import searchRouter from "./search";
 import notFoundRouter from "./notFound";
 // import anyRouter from "./any";
 // import middleware
@@ -22,6 +23,7 @@ router.use(session)
 router.use("/api/", homeRouter);
 router.use("/api/auth", isUnknownUser, authRouter);
 router.use("/api/user", isLogin, userRouter);
+router.use("/api/search", searchRouter);
 // router.use("/any", anyRouter);
 
 router.use("/*", notFoundRouter);

@@ -60,7 +60,12 @@ export default new (class extends Controller {
 
         const clincik = await Clinick.findOne({ user_id: req.user.id });
 
-        let category = await Category.findOne({ name: req.body?.categoryName }).or([{ id: req.body?.categoryId }]);
+        let category = await Category.findOne({
+            $or: [
+                { name: req.body?.categoryName },
+                { _id: req.body?.categoryId }
+            ]
+        });
         if (!category) {
             return response({
                 req, res, success: false, sCode: 404,

@@ -26,10 +26,11 @@ export default new (class extends Controller {
         const username = await createUsername(<string>first_name, <string>last_name);
         const newUser = new User({ username, first_name, last_name, password, phone });
         await newUser.save();
+        const session = await Session.findById(req.session.id);
         req.user.id = newUser.id;
         req.session.issue = "register";
         req.session.is_login = true;
-        updateSession(req, res, req.session, false);
+        updateSession(req, res, session, false);
         const user_token = jwt.sign({ session_id: req.session.id }, <string>process.env.JWT_SESSION_KEY);
         response({ res, success: true, sCode: 200, message: "user successfully registred", data: { "x-auth-token": user_token } });
     }

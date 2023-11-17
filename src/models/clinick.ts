@@ -17,9 +17,16 @@ const clinickSchema = new mongoose.Schema({
         address: { type: String, trim: true },
         map: { type: String, trim: true }
     },
+    doctors: { type: [mongoose.Schema.Types.ObjectId], ref: "Doctor" },
     rome: [
         {
+            id: {
+                type: mongoose.Schema.Types.ObjectId, required: true,
+                default: new mongoose.Types.ObjectId(),
+                index: true
+            },
             name: String,
+            doctors: { type: [mongoose.Schema.Types.ObjectId], ref: "Doctor" },
             hour: [
                 {
                     start: String,

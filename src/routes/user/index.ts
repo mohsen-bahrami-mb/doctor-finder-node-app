@@ -22,7 +22,7 @@ router.post("/addTag", validator.addTag, controller.addTag);
 router.delete("/deleteTag/:id", validator.checkId, controller.deleteTag);
 
 router.use("/doctor", doctorRouter);
-router.use("/clincik", clinickRouter);
+router.use("/clinick", clinickRouter);
 
 export default router;
 

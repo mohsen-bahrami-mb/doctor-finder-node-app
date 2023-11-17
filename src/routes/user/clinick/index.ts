@@ -8,7 +8,17 @@ import validator from "./validator";
 
 const router = express.Router();
 
-// router.post("", controller.addCategory);
+router.get("/addDoctor/:id", validator.checkId, controller.addDoctor);
+router.get("/removeDoctor/:id", validator.checkId, controller.removeDoctor);
+
+router.post("/addRome", validator.addRome, controller.addRome);
+router.put("/editRome/:id", validator.editRome, controller.editRome);
+router.delete("/removeRome/:id", validator.checkId, controller.removeRome);
+router.get("/addDoctorToRome/:romeId/:doctorId", validator.checkRome8doctorId, controller.addDoctorToRome);
+router.delete("/removeDoctorFromRome/:romeId/:doctorId", validator.checkRome8doctorId, controller.removeDoctorFromRome);
+
+router.post("/visit/create", validator.createVisit, controller.createVisit);
+router.get("/visit/:state/:visitId", validator.changeVisitState, controller.changeVisitState);
 
 export default router;
 

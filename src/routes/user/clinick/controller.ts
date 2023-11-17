@@ -282,7 +282,7 @@ export default new (class extends Controller {
         const visit = await Visit.findById(visitId);
         if (!visit) return response({
             req, res, sCode: 404, success: false,
-            message: `cannot find this vist id! - ${req.params.id}`, data: { visit: null }
+            message: `cannot find this vist id! - ${req.params.visitId}`, data: { visit: null }
         });
 
         switch (visitStateParam) {

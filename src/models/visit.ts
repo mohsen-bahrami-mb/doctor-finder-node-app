@@ -12,6 +12,7 @@ const visitSchema = new mongoose.Schema({
     hour_index: { type: Number, required: true },
     date: { type: Date, index: true, required: true },
     state: { type: String, enum: visitStateEnum, default: visitStateEnum[0] },
+    description: String
 });
 // added crerate & update time in document
 visitSchema.plugin(timeStamp);

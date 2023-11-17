@@ -6,11 +6,12 @@ import Mongoose from "mongoose";
 // import modules types
 import Express from "express";
 // import models types
-import User from "../../models/user";
+import User, { userRoleEnum } from "../../models/user";
 import Doctor from "../../models/doctor";
 import Clinick from "../../models/clinick";
 import Category from "../../models/category";
 import Tag from "../../models/tag";
+import Visit, { visitStateEnum } from "../../models/visit";
 
 export default new (class extends Controller {
     // make all route logic as middleware function
@@ -59,7 +60,7 @@ export default new (class extends Controller {
             message: "this user cannot add a category!", data: { category: null }
         });
 
-        const clincik = await Clinick.findOne({ user_id: req.user.id });
+        const clinick = await Clinick.findOne({ user_id: req.user.id });
 
         let category = await Category.findOne({
             $or: [
@@ -74,14 +75,14 @@ export default new (class extends Controller {
             });
         }
         category.doctors.push(doctor.id);
-        if (clincik) category.clinicks.push(clincik.id);
+        if (clinick) category.clinicks.push(clinick.id);
 
         doctor.category.push(category.id);
-        clincik?.category.push(category.id);
+        clinick?.category.push(category.id);
 
         await category.save();
         await doctor.save();
-        await clincik?.save();
+        await clinick?.save();
 
         response({
             req, res, success: true, sCode: 200,
@@ -141,7 +142,7 @@ export default new (class extends Controller {
             message: "this user cannot add a tag!", data: { tag: null }
         });
 
-        const clincik = await Clinick.findOne({ user_id: req.user.id });
+        const clinick = await Clinick.findOne({ user_id: req.user.id });
 
         let tag = await Tag.findOne({
             $or: [
@@ -160,14 +161,14 @@ export default new (class extends Controller {
         if (!tag) tag = new Tag({ name: req.body.tagName });
 
         tag.doctors.push(doctor.id);
-        if (clincik) tag.clinicks.push(clincik.id);
+        if (clinick) tag.clinicks.push(clinick.id);
 
         doctor.tag.push(tag.id);
-        clincik?.tag.push(tag.id);
+        clinick?.tag.push(tag.id);
 
         await tag.save();
         await doctor.save();
-        await clincik?.save();
+        await clinick?.save();
 
         response({
             req, res, success: true, sCode: 200,
@@ -217,6 +218,83 @@ export default new (class extends Controller {
                     name: tag.name,
                 }
             }
+        });
+    }
+
+    async setVisit(req: Express.Request, res: Express.Response): Promise<void> {
+        const visitId = new Mongoose.Types.ObjectId(req.params.id);
+
+        const visit = await Visit.findById(visitId);
+        if (!visit) return response({
+            req, res, sCode: 404, success: false,
+            message: `cannot find this vist id! - ${req.params.visitId}`, data: { visit: null }
+        });
+
+        if (visit.state !== visitStateEnum[0]) return response({
+            req, res, success: false, sCode: 400,
+            message: "cannot change this visit state!", data: { visit }
+        });
+
+        visit.client_user_id = new Mongoose.Types.ObjectId(req.user.id);
+        visit.state = visitStateEnum[1];
+        await visit.save();
+
+        response({
+            req, res, success: true, sCode: 200,
+            message: "set visit for user", data: { visit }
+        });
+    }
+
+    async myVisits(req: Express.Request, res: Express.Response): Promise<void> {
+        const userId = new Mongoose.Types.ObjectId(req.user.id);
+
+        const visitsAsClient = await Visit.find({ client_user_id: userId })
+            .select("-__v -updatedAt -createdAt")
+            .populate([
+                {
+                    path: "client_user_id",
+                    select: "username first_name last_name profile_photo birth_date description"
+                },
+                { path: "doctor_id", select: "-user_id -__v -updatedAt -createdAt" },
+                { path: "clinick_id", select: "-user_id -__v -updatedAt -createdAt" },
+            ]);
+
+
+        let visitsAsDoctor: unknown[] = [];
+        if (req.user.role?.indexOf(userRoleEnum[3])) {
+            // user as a doctor
+            const doctor = await Doctor.findOne({ user_id: userId });
+            visitsAsDoctor = await Visit.find({ doctor_id: doctor?.id })
+                .select("-__v -updatedAt -createdAt")
+                .populate([
+                    {
+                        path: "client_user_id",
+                        select: "username first_name last_name profile_photo birth_date description"
+                    },
+                    { path: "doctor_id", select: "-user_id -__v -updatedAt -createdAt" },
+                    { path: "clinick_id", select: "-user_id -__v -updatedAt -createdAt" },
+                ]);
+        }
+
+        let visitsAsClinick: unknown[] = [];
+        if (req.user.role?.indexOf(userRoleEnum[4])) {
+            // user as a clinick
+            const clinick = await Clinick.findOne({ user_id: userId });
+            visitsAsDoctor = await Visit.find({ clinick_id: clinick?.id })
+                .select("-__v -updatedAt -createdAt")
+                .populate([
+                    {
+                        path: "client_user_id",
+                        select: "username first_name last_name profile_photo birth_date description"
+                    },
+                    { path: "doctor_id", select: "-user_id -__v -updatedAt -createdAt" },
+                    { path: "clinick_id", select: "-user_id -__v -updatedAt -createdAt" },
+                ]);
+        }
+
+        response({
+            req, res, success: true, sCode: 200, message: "fined user visits",
+            data: { visitsAsClient, visitsAsDoctor, visitsAsClinick }
         });
     }
 

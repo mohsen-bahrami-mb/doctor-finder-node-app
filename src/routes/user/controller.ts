@@ -20,7 +20,7 @@ export default new (class extends Controller {
         const user = await User.findById(req.user.id).select({ password: 0, _id: 0 });
         const doctor = await Doctor.findOne({ user_id: req.user.id }).select({ _id: 0, user_id: 0 });
         const clinick = await Clinick.findOne({ user_id: req.user.id }).select({ _id: 0, user_id: 0 });
-        response({ req, res, success: true, sCode: 200, message: "user successfully registred", data: { user, doctor, clinick } });
+        response({ req, res, success: true, sCode: 200, message: "user data", data: { user, doctor, clinick } });
     }
 
     async madeToDoctorRole(req: Express.Request, res: Express.Response): Promise<void> {

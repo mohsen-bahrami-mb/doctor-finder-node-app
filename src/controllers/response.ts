@@ -17,9 +17,11 @@ export default function response({
 }: AppType.AppResponse): void {
     if (type === "json") {
         // send JSON response
-        res.setHeader("is_login", (req?.session?.is_login?.toString() || 'false'));
         res.setHeader("x-auth-token", req?.session.token || '');
-        res.status(sCode).json({ message, success, data });
+        res.status(sCode).json({
+            message, success, data,
+            is_login: req?.session?.is_login || false
+        });
     }
     else if (req && type === "render" && typeof view === "string") {
         // send RENDER response

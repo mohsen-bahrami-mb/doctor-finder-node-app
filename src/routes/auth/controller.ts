@@ -32,7 +32,7 @@ export default new (class extends Controller {
         req.session.is_login = true;
         updateSession(req, res, session, false);
         const user_token = jwt.sign({ session_id: req.session.id }, <string>process.env.JWT_SESSION_KEY);
-        response({ res, success: true, sCode: 200, message: "user successfully registred", data: { "x-auth-token": user_token } });
+        response({ req, res, success: true, sCode: 200, message: "user successfully registred", data: { "x-auth-token": user_token } });
     }
 
     async login(req: Express.Request, res: Express.Response): Promise<void> {
@@ -52,7 +52,7 @@ export default new (class extends Controller {
         req.session.is_login = true;
         updateSession(req, res, session, false);
         const user_token = jwt.sign({ session_id: req.session.id }, <string>process.env.JWT_SESSION_KEY);
-        response({ res, success: true, sCode: 200, message: "user successfully loged in", data: { "x-auth-token": user_token } });
+        response({ req, res, success: true, sCode: 200, message: "user successfully loged in", data: { "x-auth-token": user_token } });
     }
 
 })();

@@ -20,11 +20,11 @@ export default new (class extends Controller {
             // go to root directory
             const dirDetail = await readDir("/");
             if (!dirDetail.success) return response({
-                res, success: false, sCode: 400, message: "cannot find directory",
+                req, res, success: false, sCode: 400, message: "cannot find directory",
                 data: { url: req.originalUrl, err: dirDetail.message }
             });
             return response({
-                res, message: "root file manager directory", data: {
+                req, res, message: "root file manager directory", data: {
                     dir: dirDetail.dir, dir_description: ["name", "path", "is dir or file", "size(byte)", "file doc in db ?"],
                     url: req.originalUrl, msg: dirDetail.message
                 }
@@ -34,11 +34,11 @@ export default new (class extends Controller {
             const dirPath = req.params.dir_path.replace(/\:\:/g, "/");
             const dirDetail = await readDir(dirPath);
             if (!dirDetail.success) return response({
-                res, success: false, sCode: 400, message: "cannot find directory",
+                req, res, success: false, sCode: 400, message: "cannot find directory",
                 data: { url: req.originalUrl, err: dirDetail.message }
             });
             return response({
-                res, message: "find directory and show detail", data: {
+                req, res, message: "find directory and show detail", data: {
                     dir: dirDetail.dir, dir_description: ["name", "path", "is dir or file", "size(byte)", "file doc in db ?"],
                     url: req.originalUrl, msg: dirDetail.message
                 }

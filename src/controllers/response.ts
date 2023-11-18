@@ -17,6 +17,8 @@ export default function response({
 }: AppType.AppResponse): void {
     if (type === "json") {
         // send JSON response
+        res.setHeader("is_login", (req?.session?.is_login?.toString() || 'false'));
+        res.setHeader("x-auth-token", req?.session.token || '');
         res.status(sCode).json({ message, success, data });
     }
     else if (req && type === "render" && typeof view === "string") {
@@ -45,7 +47,7 @@ export default function response({
     }
     else if (req && type === "render-nodb" && typeof view === "string") {
         // send RENDER response (no database data!!!)
-        res.status(sCode).render(view, {message, success, data });
+        res.status(sCode).render(view, { message, success, data });
     }
     else if (req && type === "redirect-nodb" && typeof view === "string") {
         // send REDIRECT response (no database data!!!)

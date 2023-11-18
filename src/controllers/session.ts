@@ -67,6 +67,7 @@ export async function updateSession(
     if (session.expire_session < new Date()) {
         req.session.is_login = false;
         req.session.issue = "logout";
+        req.session.token = req.headers["x-auth-token"] as string;
         session.is_login = false;
         session.issue.push("logout");
         await session.save();
@@ -81,7 +82,6 @@ export async function updateSession(
     session.is_login = req.session.is_login ?? session.is_login;
     session.device = req.headers["user-agent"] ?? "unknown";
     session.ip = req.clientIp ?? "unknown";
-    session.token = req.headers["x-auth-token"];
     // (add "{}" insted of `session.content` , becouse has error when repeat reload fastly)
     session.content = session_content && session_content?.length ? session_content : "{}";
     await session.save();
@@ -94,6 +94,7 @@ export async function updateSession(
         is_login: session.is_login,
         device: session.device,
         ip: session.ip,
+        token: req.headers["x-auth-token"] as string,
         // (add this line, becouse has error when repeat reload fastly)
         content: JSON.parse(contentString)
         // (remove this line, becouse has error when repeat reload fastly)

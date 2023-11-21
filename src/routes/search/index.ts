@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get("/allCategoryName", controller.allCategoryName);
 router.get("/allTagName", controller.allTagName);
-router.get("/searchInNames/:name", controller.searchInNames);   // add city in future
+router.get("/searchInNames/:name", controller.searchInNames);   // اضافه کردن فیلتر شهر و فقط دکترهای تایید نظام پزشکی
 router.get("/getCategoryDetail/:id", validator.checkId, controller.getCategoryDetail);
 router.get("/getTagDetail/:id", validator.checkId, controller.getTagDetail);
 

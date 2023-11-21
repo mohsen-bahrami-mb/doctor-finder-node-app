@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.get("/profile", controller.getProfile);
 // ادیت پروفایل مانده
-router.get("/madeToDoctorRole", controller.madeToDoctorRole);
-router.get("/madeToClinickRole", controller.madeToClinickRole);
+router.get("/madeToDoctorRole", controller.madeToDoctorRole);       // در آینده باید شماره نظام پزشکی الزامی بشه اینجا که استعلام کنه
+router.get("/madeToClinickRole", controller.madeToClinickRole);     // در آینده باید شماره نظام پزشکی الزامی بشه اینجا که استعلام کنه
 
 router.post("/addCategory", validator.addCategory, controller.addCategory);
 router.delete("/deleteCategory/:id", validator.checkId, controller.deleteCategory);

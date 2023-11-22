@@ -34,13 +34,13 @@ export default async function session(
         }
     } else if (!token && cookieToken) {
         const { session, clearCookie } = await checkJwt(cookieToken);
-        
+
         req.session.user_id = undefined;
         req.session.is_login = false;
         req.session.issue = "visit";
-        
+
         if (clearCookie) res.cookie("x-auth-token", "", { maxAge: Date.now() });
-        if (session) {
+        if (session && !session.is_login) {
             await updateSession(req, res, session, true);
             next();
         } else {

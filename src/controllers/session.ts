@@ -63,6 +63,11 @@ export async function updateSession(
     // let is_login: boolean = false;
     // (add this line, becouse has error when repeat reload fastly)
     const contentString = session.content;
+    // token
+    const token =
+        (req.headers["x-auth-token"]) ||
+        (req.cookies["x-auth-token"]) ||
+        (jwt.sign({ session_id: session.id }, <string>process.env.JWT_SESSION_KEY));
     // check expire time
     if (session.expire_session < new Date()) {
         req.session.is_login = false;
@@ -103,7 +108,6 @@ export async function updateSession(
     if (req.session.user_id) req.user.id = req.session.user_id;
     // update cookie from jwt
     if (!setCookie) return;
-    const token = await req.cookies["x-auth-token"];
     res.cookie("x-auth-token", token, { maxAge: expireTime });
 }
 

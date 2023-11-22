@@ -14,6 +14,8 @@ router.get("/searchInNames/:name", controller.searchInNames);   // اضافه ک
 router.get("/getCategoryDetail/:id", validator.checkId, controller.getCategoryDetail);
 router.get("/getTagDetail/:id", validator.checkId, controller.getTagDetail);
 
+router.get("/searchInDoctors", validator.searchInDoctors, controller.searchInDoctors);
+
 // router.get("/allCityName", controller.allCategoryName);
 // router.get("/getCityDetail/:id", controller.getCategoryDetail);
 

@@ -8,6 +8,8 @@ import Mongoose from "mongoose";
 // import models
 import Category from "../../models/category";
 import Tag from "../../models/tag";
+import Doctor from "../../models/doctor";
+import User, { userRoleEnum } from "../../models/user";
 
 export default new (class extends Controller {
     // make all route logic as middleware function
@@ -91,6 +93,35 @@ export default new (class extends Controller {
         response({
             req, res, success: true, sCode: 200,
             message: "find tag detail", data: { tag: tag[0] }
+        });
+    }
+
+    async searchInDoctors(req: Express.Request, res: Express.Response): Promise<void> {
+        const { first_name, last_name, medical_serial } = req.query;
+
+        const users = await User.find({
+            $or: [
+                { first_name, role: { $in: [userRoleEnum[3]] } },
+                { last_name, role: { $in: [userRoleEnum[3]] } }
+            ]
+        });
+        const usersId = users.map(u => u.id)
+
+        const doctors = await Doctor.find({
+            $or: [
+                { _id: { $in: usersId } },
+                { medical_serial }
+            ]
+        }).populate("user_id", "-_id -__v -updatedAt -createdAt phone -email -password -verify -birth_date");
+
+        if (!doctors.length) return response({
+            req, res, success: false, sCode: 404,
+            message: "not found any doctor with this data!", data: { doctors }
+        });
+
+        response({
+            req, res, success: true, sCode: 200,
+            message: "find doctors data", data: { doctors }
         });
     }
 
